@@ -1,0 +1,173 @@
+/*
+ NQueens
+
+Problem Description
+The n-queens puzzle is the problem of placing n queens on an n×n chessboard such that no two queens attack each other.
+
+
+
+Given an integer A, return all distinct solutions to the n-queens puzzle.
+
+Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space respectively.
+The final list should be generated in such a way that the indices of the queens in each list should be in reverse lexicographical order.
+
+
+Problem Constraints
+1 <= A <= 10
+
+
+
+Input Format
+First argument is an integer n denoting the size of chessboard
+
+
+
+Output Format
+Return an array consisting of all distinct solutions in which each element is a 2d char array representing a unique solution.
+
+
+
+Example Input
+Input 1:
+
+A = 4
+Input 2:
+
+A = 1
+
+
+Example Output
+Output 1:
+
+[
+ [".Q..",  // Solution 1
+  "...Q",
+  "Q...",
+  "..Q."],
+
+ ["..Q.",  // Solution 2
+  "Q...",
+  "...Q",
+  ".Q.."]
+]
+Output 1:
+
+[
+ [Q]
+]
+
+
+Example Explanation
+Explanation 1:
+
+There exist only two distinct solutions to the 4-queens puzzle:
+Explanation 1:
+
+There exist only one distinct solutions to the 1-queens puzzle:
+
+Time Complexity:
+there are n3 ways to place Q1 in first cell, 3 ways to place in 2nd cell and so on
+total 27 ways for 3x3 board
+hence there are 3^3 ways to place queens
+
+Space Complexity: 
+n space to place Q1 in first row
+n-1 space to place queen in second row (because one cell is already occupied by previous queen)
+n-3 space in 3rd and so on
+n * (n-1) * (n-2) * (n-3) .......
+i.e n! space is requred 
+
+TC: O(n^n)
+SC: O(n!)
+
+Approach:
+we will be placing queens row wise
+check if we completed all rows of chess Board then create the Board and return it
+hence write a for loop for col wise, r th row queen is place in ith col
+check if it is safe to place the queen.. if yes then call the same func recursively for row+1(Board[row] has the col value)
+
+isSafe: 
+iterate over row i 
+    check if cell contains Queen. board[i] has the col value
+    check diagnol and anti diagnol
+          diagnol will be r-c ( r is i board[i] is col) 
+          diagnol elements are (1,0) difference is 1
+                               (2,1) difference is 1
+                               (3,2) difference is 1
+                               as row increases (r++) col increases(c++) difference  is constant
+                               difference = r-c
+          anti diagnol will be r+c
+          anti diagnol elements are (2,0) difference is 2
+                                    (1,1) difference is 2
+                                    (0,2) difference is 2
+                                    as row decreases (r--) col increases(c++) difference  is constant 
+                                    difference = r+c
+                                    
+                                    (1,3) difference is 4
+                                    (2,2) difference is 4
+                                    (3,1) difference is 4
+                                    difference = r+c
+                              if(r1-c1 == r2-c2  || r1-+1 == r2+c2){ 
+                                 this is conflicting return false
+                              }
+                            
+
+*/
+
+public class Solution {
+	 
+  public static  ArrayList<ArrayList<String>> res ; 
+	public static int N;
+	public static ArrayList<ArrayList<String>> solveNQueens(int A) {
+    res = new  ArrayList<ArrayList<String>>();
+    int[] Board = new int[A]; 
+    N = A; 
+    PlaceQueen(Board, 0); 
+	
+    return res;
+		
+	}
+	public static void PlaceQueen(int[] Board, int row){
+		if(row == N) { 
+			addQueensToResult(Board);
+		}
+		else {
+			for(int i = 0; i < N; i++){// loop col wise
+				Board[row] = i; //r th row queen is place in ith col, Board[row] has the col value
+				if(IsSafe(Board, row, i)){ 
+					PlaceQueen(Board, row+1); 
+				}
+			} 
+		}
+	}
+	public  static boolean IsSafe(int[] Board, int r, int c)
+	{
+		int i, j;
+		for (i = 0; i < r; i++){// iterate over row
+			if (Board[i] == c)// check if row  cell contains Queen. board[i] has the col value
+				return false;
+            //diagnol and anti diagnol
+			if((r - c) == i-Board[i] || ((r+c) == i+ Board[i]))
+				return false; 
+
+		}
+		return true;
+	}
+	public static void addQueensToResult(int[] Board) {
+		ArrayList<String> temp = new ArrayList<String>();
+		for(int i=0;i<N;i++) {
+			String row = "";
+			for(int j = 0; j < N; j++){
+				if(Board[i] == j)
+					row += "Q";
+				else
+					row += ".";
+			}
+			temp.add(row);//append string to sub array
+		}
+		res.add(temp);//add sub array to main array
+	}
+
+}
+
+
