@@ -1,0 +1,27 @@
+/*
+Selection Sort Algorithm
+Approach:
+Time Complexity: O(n^2)
+Space Complexity 
+*/
+
+public void selectionSort(int[] arr)
+{
+  int n = arr.length;
+  for(int i=0; i<n-1; i++){
+    int smallestElement = arr[i];
+      for(int j=i+1; j<n-1; j++){
+        if(arr[j] < smallestElement){
+          smallestElement = arr[j];
+        }
+       }
+       swap(arr,i,smallestElement);
+   }
+}
+
+public void swap(int[] arr, int i, int j)
+{
+  int temp = arr[i];
+  arr[i] = arr[j];
+  arr[j] = temp;
+}
