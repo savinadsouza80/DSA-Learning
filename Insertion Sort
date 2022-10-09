@@ -1,0 +1,22 @@
+/*
+Insertion Sort Algorithm
+Approach:
+Time Complexity: O(n^2)
+Space Complexity 
+*/
+
+public void insertionSort(int[] arr)
+{
+  int n = arr.length;
+  for(int i=1; i<n-1; i++){
+     int curr = arr[i];
+     int j = i-1;
+     while(j>=0 && curr < arr[j]){
+        //make space and push elements in sorted array to back
+        arr[j+1] = arr[j];
+        j--;
+     }
+     arr[j+1] = curr;
+  }
+}
+ 
